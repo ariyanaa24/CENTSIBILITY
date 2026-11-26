@@ -1,0 +1,10 @@
+$kind: http-request
+url: http://localhost:3000/api/v1/savings-goals?status=Active
+method: GET
+queryParams:
+  status: Active
+scripts:
+  - type: afterResponse
+    code: pm.test("Status is 200", function () { pm.response.to.have.status(200); });
+    language: text/javascript
+order: 3000

@@ -12,4 +12,16 @@ Backend for Centsibility, an expense tracker and savings goal app (ITEC 116).
 5. `npm run start:dev`
 6. Optional: register `demo@centsibility.com` through the API, then run `database/sample-data.sql`.
 
-The API runs at `http://localhost:3000/api/v1`
+The API runs at `http://localhost:3000/api/v1`.
+
+## Endpoints (all under /api/v1)
+| Module | Endpoints |
+|---|---|
+| Auth | POST /auth/login |
+| Users | POST /users, GET /users/:id, PATCH /users/:id |
+| Categories | GET /categories, GET /categories/:id, POST /categories, PUT /categories/:id, DELETE /categories/:id |
+| Transactions | GET /transactions, GET /transactions/:id, POST /transactions, PATCH /transactions/:id, DELETE /transactions/:id, GET /categories/:id/transactions |
+| Budgets | GET /budgets, GET /budgets/:id, POST /budgets, PATCH /budgets/:id, DELETE /budgets/:id |
+| Savings goals | GET /savings-goals, GET /savings-goals/:id, POST /savings-goals, PATCH /savings-goals/:id, DELETE /savings-goals/:id |
+
+Every route except `POST /users` and `POST /auth/login` needs `Authorization: Bearer <token>`.

@@ -1,0 +1,16 @@
+$kind: collection
+description: ITEC 116 Final Project. Run '1. Auth and Users' first (Login saves the token). Then run folders 2 to 6 in order.
+variables:
+  token: ""
+  userId: ""
+  categoryId: ""
+  tempCategoryId: ""
+  transactionId: ""
+  budgetId: ""
+  goalId: ""
+auth:
+  - id: 2ebf7a75-7902-4090-89d8-73a15444e35e
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{token}}"

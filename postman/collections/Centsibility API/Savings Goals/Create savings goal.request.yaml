@@ -1,0 +1,20 @@
+$kind: http-request
+url: http://localhost:3000/api/v1/savings-goals
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "goalName": "Emergency Fund",
+      "targetAmount": 10000.0,
+      "targetDate": "2027-03-31"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status is 201", function () { pm.response.to.have.status(201); });
+      if (pm.response.code < 300) { pm.collectionVariables.set("goalId", pm.response.json().goalId); }
+    language: text/javascript
+order: 1000

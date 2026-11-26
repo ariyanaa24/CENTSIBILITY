@@ -17,6 +17,7 @@ export class CreateUserDto {
 
   @IsString()
   @MinLength(8, { message: 'password must be at least 8 characters.' })
+  @MaxLength(72, { message: 'password must be at most 72 characters.' })
   @Matches(/(?=.*[A-Za-z])(?=.*\d)/, { message: 'password must have letters and numbers.' })
   password: string;
 }
