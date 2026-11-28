@@ -1,5 +1,8 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
+/**
+ * PATCH body: every field is optional, so the client sends only what changes.
+ */
 export class UpdateUserDto {
   @IsOptional()
   @IsString()

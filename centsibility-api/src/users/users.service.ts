@@ -6,11 +6,18 @@ import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
+/**
+ * Business logic for users: register, view, and update the profile.
+ */
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private readonly usersRepo: Repository<User>) {}
 
+  /**
+   * Registers a new user. Returns the user without the password.
+   */
   async create(dto: CreateUserDto) {
+    // 409 if the email is already registered.
     await this.assertEmailFree(dto.email);
     const passwordHash = await bcrypt.hash(dto.password, 10); // never save the plain password
     const saved = await this.usersRepo.save(
@@ -24,6 +31,9 @@ export class UsersService {
     return this.toResponse(saved);
   }
 
+  /**
+   * Gets one user by ID (404 if not found).
+   */
   async findOne(id: number) {
     const user = await this.usersRepo.findOne({ where: { userId: id } });
     if (!user) {
@@ -32,12 +42,19 @@ export class UsersService {
     return this.toResponse(user);
   }
 
+  /**
+   * Changes only the fields the client sent (PATCH).
+   */
   async update(id: number, dto: UpdateUserDto) {
     const user = await this.usersRepo.findOne({ where: { userId: id } });
     if (!user) {
       throw new NotFoundException({ message: 'User not found.', errors: [`No user exists with ID ${id}.`] });
     }
+
+    // Only check for a duplicate when the email is really changing.
     if (dto.email && dto.email !== user.email) await this.assertEmailFree(dto.email);
+
+    // Copy the sent fields onto the saved user.
     Object.assign(user, dto);
     return this.toResponse(await this.usersRepo.save(user));
   }
@@ -51,6 +68,9 @@ export class UsersService {
       .getOne();
   }
 
+  /**
+   * Throws 409 Conflict if another user already has this email.
+   */
   private async assertEmailFree(email: string) {
     const exists = await this.usersRepo.findOne({ where: { email } });
     if (exists) {

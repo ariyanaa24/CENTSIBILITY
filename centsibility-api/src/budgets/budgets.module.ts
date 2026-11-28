@@ -5,7 +5,11 @@ import { Budget } from '../entities/budget.entity';
 import { BudgetsController } from './budgets.controller';
 import { BudgetsService } from './budgets.service';
 
+/**
+ * Budgets feature.
+ */
 @Module({
+  // CategoriesModule gives us CategoriesService.findOwned() to check the category.
   imports: [TypeOrmModule.forFeature([Budget]), CategoriesModule],
   controllers: [BudgetsController],
   providers: [BudgetsService],

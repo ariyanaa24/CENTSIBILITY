@@ -14,6 +14,7 @@ export class UpdateTransactionDto {
   amount?: number;
 
   @IsOptional()
+  // Custom validator: a real calendar date written as YYYY-MM-DD.
   @IsDateOnly()
   transactionDate?: string;
 

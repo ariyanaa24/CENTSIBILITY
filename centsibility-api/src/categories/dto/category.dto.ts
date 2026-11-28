@@ -7,6 +7,7 @@ export class CategoryDto {
   @MaxLength(50, { message: 'categoryName must be at most 50 characters.' })
   categoryName: string;
 
+  // Only 'Income' or 'Expense' is allowed (same as the CHECK rule in MySQL).
   @IsIn(['Income', 'Expense'], { message: "categoryType must be 'Income' or 'Expense'." })
   categoryType: 'Income' | 'Expense';
 }

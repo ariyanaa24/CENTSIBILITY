@@ -3,6 +3,9 @@ import { IsIn, IsInt, IsOptional } from 'class-validator';
 import { IsDateOnly } from '../../common/is-date-only.decorator';
 import { PaginationDto } from '../../common/pagination.dto';
 
+/**
+ * Query string for GET /transactions: filters, sorting, and (inherited) page and limit.
+ */
 export class QueryTransactionsDto extends PaginationDto {
   @IsOptional()
   @Type(() => Number)
@@ -10,6 +13,7 @@ export class QueryTransactionsDto extends PaginationDto {
   categoryId?: number;
 
   @IsOptional()
+  // Dates are inclusive and must be written as YYYY-MM-DD.
   @IsDateOnly()
   startDate?: string;
 

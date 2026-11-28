@@ -1,6 +1,9 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Max, MaxLength } from 'class-validator';
 import { IsDateOnly } from '../../common/is-date-only.decorator';
 
+/**
+ * Body for creating a goal. The saved amount starts at 0 and the status at Active, so they are not sent.
+ */
 export class CreateSavingsGoalDto {
   @IsString()
   @IsNotEmpty({ message: 'goalName is required.' })

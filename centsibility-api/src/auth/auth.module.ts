@@ -7,10 +7,15 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 
+/**
+ * Groups everything for authentication: the login route, the service, and the JWT settings.
+ */
 @Module({
   imports: [
+    // UsersService is needed to find the user at login.
     UsersModule,
     PassportModule,
+    // Settings for signing tokens: the secret and the lifetime come from .env.
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -21,6 +26,7 @@ import { JwtStrategy } from './jwt.strategy';
     }),
   ],
   controllers: [AuthController],
+  // JwtStrategy must be listed here, or @UseGuards(JwtAuthGuard) will not work.
   providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

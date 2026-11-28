@@ -26,6 +26,7 @@ export class UpdateSavingsGoalDto {
   targetDate?: string;
 
   @IsOptional()
+  // Same three values as the CHECK rule in MySQL.
   @IsIn(['Active', 'Completed', 'Cancelled'], { message: "status must be 'Active', 'Completed', or 'Cancelled'." })
   status?: 'Active' | 'Completed' | 'Cancelled';
 }

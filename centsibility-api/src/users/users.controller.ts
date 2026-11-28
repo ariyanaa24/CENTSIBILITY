@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
+// All routes in this controller start with /users.
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -19,6 +20,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number, @CurrentUser() user: { userId: number }) {
+    // A user can only access their own account (403 otherwise).
     this.assertOwner(id, user.userId);
     return this.usersService.findOne(id);
   }
@@ -27,10 +29,14 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateUserDto, @CurrentUser() user: { userId: number }) {
+    // Same ownership check as in GET.
     this.assertOwner(id, user.userId);
     return this.usersService.update(id, dto);
   }
 
+  /**
+   * Throws 403 Forbidden if the ID in the URL is not the logged-in user.
+   */
   private assertOwner(id: number, currentUserId: number) {
     if (id !== currentUserId) {
       throw new ForbiddenException({

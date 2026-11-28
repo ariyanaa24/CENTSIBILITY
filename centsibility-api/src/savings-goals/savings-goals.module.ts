@@ -4,6 +4,9 @@ import { SavingsGoal } from '../entities/savings-goal.entity';
 import { SavingsGoalsController } from './savings-goals.controller';
 import { SavingsGoalsService } from './savings-goals.service';
 
+/**
+ * Savings goals feature.
+ */
 @Module({
   imports: [TypeOrmModule.forFeature([SavingsGoal])],
   controllers: [SavingsGoalsController],

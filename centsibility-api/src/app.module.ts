@@ -1,3 +1,5 @@
+// app.module.ts - the root module.
+// It connects to MySQL and loads every feature module.
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,22 +16,28 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { BudgetsModule } from './budgets/budgets.module';
 import { SavingsGoalsModule } from './savings-goals/savings-goals.module';
 
+// The root module of the app.
 @Module({
   imports: [
+    // Load the .env file. isGlobal makes ConfigService available in every module.
     ConfigModule.forRoot({ isGlobal: true }),
+    // Connect TypeORM to MySQL. The settings are read from .env.
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
+        // Connection settings (all values come from the .env file):
         type: 'mysql',
         host: config.get('DB_HOST'),
         port: +config.get('DB_PORT'),
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
+        // Every entity (table) that TypeORM should know about.
         entities: [User, Category, Transaction, Budget, SavingsGoal, RecurringExpense],
         synchronize: config.get('DB_SYNC') === 'true', // true = TypeORM creates tables; false = use database/schema.sql
       }),
     }),
+    // Feature modules (each one has its own controller, service, and DTOs):
     AuthModule,
     UsersModule,
     CategoriesModule,

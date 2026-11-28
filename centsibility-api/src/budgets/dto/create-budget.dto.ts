@@ -1,6 +1,9 @@
 import { IsInt, IsNumber, IsOptional, IsPositive, Matches, Max, Min } from 'class-validator';
 import { IsDateOnly } from '../../common/is-date-only.decorator';
 
+/**
+ * Body for setting a budget. alertThreshold is optional (default 80).
+ */
 export class CreateBudgetDto {
   @IsInt({ message: 'categoryId must be a whole number.' })
   categoryId: number;
@@ -11,6 +14,7 @@ export class CreateBudgetDto {
   monthlyLimit: number;
 
   @IsDateOnly()
+  // budgetMonth must be the first day of a month, for example 2026-11-01.
   @Matches(/^\d{4}-\d{2}-01$/, { message: 'budgetMonth must be the first day of the month (YYYY-MM-01).' })
   budgetMonth: string;
 
